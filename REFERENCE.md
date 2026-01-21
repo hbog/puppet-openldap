@@ -1767,7 +1767,7 @@ Type: Ruby 4.x API
 
 The openldap_password function.
 
-#### `openldap_password(String $secret, Optional[Enum["CRYPT","MD5","SMD5","SSHA","SHA"]] $scheme)`
+#### `openldap_password(String $secret, Optional[Enum["PBKDF2","CRYPT","MD5","SMD5","SSHA","SHA"]] $scheme, Optional[Integer] $iterations, Optional[Enum["SHA256", "SHA512"]] $hash_type)`
 
 The openldap_password function.
 
@@ -1781,9 +1781,23 @@ The secret to be hashed.
 
 ##### `scheme`
 
-Data type: `Optional[Enum["CRYPT","MD5","SMD5","SSHA","SHA"]]`
+Data type: `Optional[Enum["PBKDF2","CRYPT","MD5","SMD5","SSHA","SHA"]]`
 
 The optional scheme to use (defaults to SSHA).
+
+##### `iterations`
+
+Data type: `Optional[Integer]`
+
+The number of iterations to use for the hashing (defaults to 60000).
+Only applicable for PBKDF2.
+
+##### `hash_type`
+
+Data type: `Optional[Enum["SHA256", "SHA512"]]`
+
+The hash algorithm to use: 'SHA256' (32 bytes) or 'SHA512' (64 bytes).
+Defaults to 'SHA512'. Only applicable for PBKDF2.
 
 ## Data types
 
