@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'openssl'
 require 'digest'
 require 'base64'
@@ -40,8 +41,8 @@ Puppet::Functions.create_function(:openldap_password) do
       salt = OpenSSL::Random.random_bytes(16)
 
       digest_map = {
-        'SHA256' => { name: 'SHA256', length: 32, obj: OpenSSL::Digest::SHA256.new },
-        'SHA512' => { name: 'SHA512', length: 64, obj: OpenSSL::Digest::SHA512.new }
+        'SHA256' => { name: 'SHA256', length: 32, obj: OpenSSL::Digest.new('SHA256') },
+        'SHA512' => { name: 'SHA512', length: 64, obj: OpenSSL::Digest.new('SHA512') }
       }
 
       config = digest_map[hash_type]
