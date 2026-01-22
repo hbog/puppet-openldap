@@ -35,6 +35,10 @@ Puppet::Functions.create_function(:openldap_password) do
     return_type 'String'
   end
 
+  def ab64_encode(data)
+    Base64.strict_encode64(data).tr('+', '.').delete('=')
+  end
+
   def generate_password(secret, scheme = 'SSHA', iterations = 60_000, hash_type = 'SHA512')
     case scheme[%r{([A-Z,0-9]+)}, 1]
     when 'PBKDF2'
@@ -55,13 +59,7 @@ Puppet::Functions.create_function(:openldap_password) do
         config[:obj]
       )
 
-      value = [
-        salt,
-        iterations.to_s,
-        derived_key
-      ].join('$')
-
-      password = "{PBKDF2-#{config[:name]}}#{Base64.strict_encode64(value)}"
+      password = "{PBKDF2-#{config[:name]}}#{iterations}$#{ab64_encode(salt)}$#{ab64_encode(derived_key)}"
     when 'CRYPT'
       salt = call_function('fqdn_rand_string', 2)
       password = "{CRYPT}#{secret.crypt(salt)}"
