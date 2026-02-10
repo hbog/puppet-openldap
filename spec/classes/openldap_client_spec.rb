@@ -16,6 +16,14 @@ describe 'openldap::client' do
         case facts[:os]['family']
         when 'Debian'
           case facts[:os]['release']['major']
+          when '11', '18.04', '20.04'
+            it {
+              is_expected.to contain_class('openldap::client').with(package: 'libldap-2.4-2',
+                                                                    file: '/etc/ldap/ldap.conf',
+                                                                    base: nil,
+                                                                    uri: nil,
+                                                                    tls_cacert: nil)
+            }
           when '12', '22.04'
             it {
               is_expected.to contain_class('openldap::client').with(package: 'libldap-2.5-0',
@@ -24,17 +32,9 @@ describe 'openldap::client' do
                                                                     uri: nil,
                                                                     tls_cacert: nil)
             }
-          when '24.04'
-            it {
-              is_expected.to contain_class('openldap::client').with(package: 'libldap2',
-                                                                    file: '/etc/ldap/ldap.conf',
-                                                                    base: nil,
-                                                                    uri: nil,
-                                                                    tls_cacert: nil)
-            }
           else
             it {
-              is_expected.to contain_class('openldap::client').with(package: 'libldap-2.4-2',
+              is_expected.to contain_class('openldap::client').with(package: 'libldap2',
                                                                     file: '/etc/ldap/ldap.conf',
                                                                     base: nil,
                                                                     uri: nil,
