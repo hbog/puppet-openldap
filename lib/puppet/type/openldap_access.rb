@@ -41,7 +41,7 @@ Puppet::Type.newtype(:openldap_access) do
 
     def insync?(is)
       @should.flatten!
-      super(is)
+      super
     end
   end
 

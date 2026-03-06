@@ -46,7 +46,7 @@ Puppet::Functions.create_function(:openldap_password) do
 
       digest_map = {
         'SHA256' => { name: 'SHA256', length: 32, obj: OpenSSL::Digest.new('SHA256') },
-        'SHA512' => { name: 'SHA512', length: 64, obj: OpenSSL::Digest.new('SHA512') }
+        'SHA512' => { name: 'SHA512', length: 64, obj: OpenSSL::Digest.new('SHA512') },
       }
 
       config = digest_map[hash_type]
@@ -56,7 +56,7 @@ Puppet::Functions.create_function(:openldap_password) do
         salt,
         iterations,
         config[:length],
-        config[:obj]
+        config[:obj],
       )
 
       password = "{PBKDF2-#{config[:name]}}#{iterations}$#{ab64_encode(salt)}$#{ab64_encode(derived_key)}"

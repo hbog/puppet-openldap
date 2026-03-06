@@ -735,7 +735,7 @@ describe 'openldap::client::config' do
                                                                       'set SASL_REALM TEST.REALM',
                                                                       'set SASL_AUTHCID dn:uid=test,cn=mech,cn=authzid',
                                                                       'set SASL_SECPROPS noplain,noactive',
-                                                                      'set SASL_NOCANON true'])
+                                                                      'set SASL_NOCANON true',])
           }
         when 'RedHat'
           it {
@@ -744,7 +744,7 @@ describe 'openldap::client::config' do
                                                                       'set SASL_REALM TEST.REALM',
                                                                       'set SASL_AUTHCID dn:uid=test,cn=mech,cn=authzid',
                                                                       'set SASL_SECPROPS noplain,noactive',
-                                                                      'set SASL_NOCANON true'])
+                                                                      'set SASL_NOCANON true',])
           }
         end
       end
@@ -768,14 +768,14 @@ describe 'openldap::client::config' do
             is_expected.to contain_augeas('ldap.conf').with(incl: '/etc/ldap/ldap.conf',
                                                             changes: ['set GSSAPI_SIGN false',
                                                                       'set GSSAPI_ENCRYPT true',
-                                                                      'set GSSAPI_ALLOW_REMOTE_PRINCIPAL on'])
+                                                                      'set GSSAPI_ALLOW_REMOTE_PRINCIPAL on',])
           }
         when 'RedHat'
           it {
             is_expected.to contain_augeas('ldap.conf').with(incl: '/etc/openldap/ldap.conf',
                                                             changes: ['set GSSAPI_SIGN false',
                                                                       'set GSSAPI_ENCRYPT true',
-                                                                      'set GSSAPI_ALLOW_REMOTE_PRINCIPAL on'])
+                                                                      'set GSSAPI_ALLOW_REMOTE_PRINCIPAL on',])
           }
         end
       end

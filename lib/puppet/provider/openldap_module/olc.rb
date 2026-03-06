@@ -2,9 +2,9 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), %w[.. openldap]))
 
-Puppet::Type.
-  type(:openldap_module).
-  provide(:olc, parent: Puppet::Provider::Openldap) do
+Puppet::Type
+  .type(:openldap_module)
+  .provide(:olc, parent: Puppet::Provider::Openldap) do
   # TODO: Use ruby bindings (can't find one that support IPC)
 
   defaultfor 'os.family' => %i[debian freebsd redhat suse]
@@ -39,7 +39,7 @@ Puppet::Type.
         when %r{^olcModuleLoad: }
           i << new(
             ensure: :present,
-            name: line.match(%r{^olcModuleLoad: \{\d+\}([^.]+).*$}).captures[0]
+            name: line.match(%r{^olcModuleLoad: \{\d+\}([^.]+).*$}).captures[0],
           )
         end
       end

@@ -111,11 +111,15 @@ Data type: `String[1]`
 
 
 
+Default value: `'openldap'`
+
 ##### <a name="-openldap--client--file"></a>`file`
 
 Data type: `Stdlib::Absolutepath`
 
 
+
+Default value: `'/etc/openldap/ldap.conf'`
 
 ##### <a name="-openldap--client--package_version"></a>`package_version`
 
@@ -536,11 +540,15 @@ Data type: `String[1]`
 
 
 
+Default value: `'/etc/openldap/slapd.d'`
+
 ##### <a name="-openldap--server--conffile"></a>`conffile`
 
 Data type: `String[1]`
 
 
+
+Default value: `'/etc/openldap/slapd.conf'`
 
 ##### <a name="-openldap--server--service"></a>`service`
 
@@ -548,11 +556,15 @@ Data type: `String[1]`
 
 
 
+Default value: `'slapd'`
+
 ##### <a name="-openldap--server--owner"></a>`owner`
 
 Data type: `String[1]`
 
 
+
+Default value: `'ldap'`
 
 ##### <a name="-openldap--server--group"></a>`group`
 
@@ -560,11 +572,15 @@ Data type: `String[1]`
 
 
 
+Default value: `'ldap'`
+
 ##### <a name="-openldap--server--escape_ldapi_ifs"></a>`escape_ldapi_ifs`
 
 Data type: `Boolean`
 
 
+
+Default value: `false`
 
 ##### <a name="-openldap--server--ldapi_ifs"></a>`ldapi_ifs`
 
@@ -572,11 +588,15 @@ Data type: `Array[String[1]]`
 
 
 
+Default value: `['/']`
+
 ##### <a name="-openldap--server--default_directory"></a>`default_directory`
 
 Data type: `Stdlib::Absolutepath`
 
 
+
+Default value: `'/var/lib/ldap'`
 
 ##### <a name="-openldap--server--manage_epel"></a>`manage_epel`
 

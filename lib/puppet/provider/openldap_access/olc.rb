@@ -6,9 +6,9 @@ require 'tempfile'
 # rubocop:disable Naming/VariableName
 # rubocop:disable Naming/MethodName
 # rubocop:disable Lint/AssignmentInCondition
-Puppet::Type.
-  type(:openldap_access).
-  provide(:olc, parent: Puppet::Provider::Openldap) do
+Puppet::Type
+  .type(:openldap_access)
+  .provide(:olc, parent: Puppet::Provider::Openldap) do
   # TODO: Use ruby bindings (can't find one that support IPC)
 
   defaultfor 'os.family' => %i[debian freebsd redhat suse]
@@ -44,7 +44,7 @@ Puppet::Type.
             position: position,
             what: what,
             access: access,
-            suffix: suffix
+            suffix: suffix,
           )
         end
       end
@@ -133,7 +133,7 @@ Puppet::Type.
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 

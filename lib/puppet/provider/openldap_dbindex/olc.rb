@@ -5,9 +5,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), %w[.. openldap]))
 # rubocop:disable Naming/VariableName
 # rubocop:disable Naming/MethodName
 # rubocop:disable Lint/AssignmentInCondition
-Puppet::Type.
-  type(:openldap_dbindex).
-  provide(:olc, parent: Puppet::Provider::Openldap) do
+Puppet::Type
+  .type(:openldap_dbindex)
+  .provide(:olc, parent: Puppet::Provider::Openldap) do
   # TODO: Use ruby bindings (can't find one that support IPC)
 
   defaultfor 'os.family' => %i[debian freebsd redhat suse]
@@ -32,7 +32,7 @@ Puppet::Type.
             ensure: :present,
             attribute: attrlist,
             suffix: suffix,
-            indices: indices
+            indices: indices,
           )
         end
       end

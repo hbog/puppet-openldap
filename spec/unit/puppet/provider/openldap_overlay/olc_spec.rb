@@ -33,10 +33,10 @@ describe Puppet::Type.type(:openldap_overlay).provider(:olc) do
           olcSuffix: dc=example,dc=com
         OUTPUT
         allow(described_class).to receive(:slapcat).with(
-          '(olcOverlay=*)'
+          '(olcOverlay=*)',
         ).and_return(slapcat_overlay_output)
         allow(described_class).to receive(:slapcat).with(
-          '(olcDatabase={2}mdb)'
+          '(olcDatabase={2}mdb)',
         ).and_return(slapcat_db_output)
       end
 
@@ -52,7 +52,7 @@ describe Puppet::Type.type(:openldap_overlay).provider(:olc) do
             'olcPPolicyHashCleartext'  => 'FALSE',
             'olcPPolicyUseLockout'     => 'FALSE',
             'olcPPolicyForwardUpdates' => 'FALSE',
-          }
+          },
         )
       end
     end
@@ -76,10 +76,10 @@ describe Puppet::Type.type(:openldap_overlay).provider(:olc) do
           olcDatabase: {-1}frontend
         OUTPUT
         allow(described_class).to receive(:slapcat).with(
-          '(olcOverlay=*)'
+          '(olcOverlay=*)',
         ).and_return(slapcat_overlay_output)
         allow(described_class).to receive(:slapcat).with(
-          '(olcDatabase={-1}frontend)'
+          '(olcDatabase={-1}frontend)',
         ).and_return(slapcat_db_output)
       end
 
@@ -94,7 +94,7 @@ describe Puppet::Type.type(:openldap_overlay).provider(:olc) do
             'olcChainCacheURI'         => 'FALSE',
             'olcChainMaxReferralDepth' => '1',
             'olcChainReturnError'      => 'TRUE',
-          }
+          },
         )
       end
     end

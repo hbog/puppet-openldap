@@ -3,9 +3,9 @@
 require File.expand_path(File.join(File.dirname(__FILE__), %w[.. openldap]))
 
 # rubocop:disable Lint/RescueException
-Puppet::Type.
-  type(:openldap_global_conf).
-  provide(:olc, parent: Puppet::Provider::Openldap) do
+Puppet::Type
+  .type(:openldap_global_conf)
+  .provide(:olc, parent: Puppet::Provider::Openldap) do
   # TODO: Use ruby bindings (can't find one that support IPC)
 
   defaultfor 'os.family' => %i[debian freebsd redhat suse]
@@ -37,7 +37,7 @@ Puppet::Type.
       new_instances << Puppet::Type::Openldap_global_conf::ProviderOlc.new(
         name: k,
         ensure: :present,
-        value: v
+        value: v,
       )
     end
 

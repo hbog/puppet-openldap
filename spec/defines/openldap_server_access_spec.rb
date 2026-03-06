@@ -47,9 +47,9 @@ describe 'openldap::server::access' do
         it { is_expected.to compile.with_all_deps }
 
         it {
-          is_expected.to contain_openldap_access('0 on dc=example,dc=com').
-            with_what('attrs=userPassword,shadowLastChange').
-            with_access(['by dn="cn=admin,dc=example,dc=com" write', 'by anonymous read'])
+          is_expected.to contain_openldap_access('0 on dc=example,dc=com')
+            .with_what('attrs=userPassword,shadowLastChange')
+            .with_access(['by dn="cn=admin,dc=example,dc=com" write', 'by anonymous read'])
         }
       end
     end
