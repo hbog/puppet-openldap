@@ -83,7 +83,7 @@ describe 'openldap::server' do
   does_not_support_proxy_protocol = [
     %w[AlmaLinux 8],
     %w[Debian 11],
-    %w[Rocky 8]
+    %w[Rocky 8],
   ]
   unless does_not_support_proxy_protocol.include?([fact('os.name'), fact('os.release.major')])
     context 'when enabling PROXY Protocol' do

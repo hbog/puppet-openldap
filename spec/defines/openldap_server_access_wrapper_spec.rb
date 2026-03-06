@@ -51,7 +51,7 @@ describe 'openldap::server::access_wrapper' do
             'by dn.exact=cn=replicator,dc=example,dc=com read',
             'by * break',
           ],
-          suffix: 'dc=example,dc=com'
+          suffix: 'dc=example,dc=com',
         )
       end
 
@@ -64,7 +64,7 @@ describe 'openldap::server::access_wrapper' do
             'by self write',
             'by anonymous auth',
           ],
-          suffix: 'dc=example,dc=com'
+          suffix: 'dc=example,dc=com',
         )
       end
 
@@ -75,7 +75,7 @@ describe 'openldap::server::access_wrapper' do
           access: [
             'by self read',
           ],
-          suffix: 'dc=example,dc=com'
+          suffix: 'dc=example,dc=com',
         )
       end
     end

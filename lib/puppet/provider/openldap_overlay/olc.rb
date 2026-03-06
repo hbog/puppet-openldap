@@ -5,9 +5,9 @@ require File.expand_path(File.join(File.dirname(__FILE__), %w[.. openldap]))
 # rubocop:disable Naming/MethodName
 # rubocop:disable Lint/RescueException
 # rubocop:disable Lint/EmptyWhen
-Puppet::Type.
-  type(:openldap_overlay).
-  provide(:olc, parent: Puppet::Provider::Openldap) do
+Puppet::Type
+  .type(:openldap_overlay)
+  .provide(:olc, parent: Puppet::Provider::Openldap) do
   # TODO: Use ruby bindings (can't find one that support IPC)
 
   defaultfor 'os.family' => %i[debian freebsd redhat suse]
@@ -45,7 +45,7 @@ Puppet::Type.
         overlay: overlay,
         suffix: suffix,
         index: index.to_i,
-        options: options.empty? ? nil : options
+        options: options.empty? ? nil : options,
       )
     end
   end
@@ -146,7 +146,7 @@ Puppet::Type.
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 
@@ -204,11 +204,11 @@ Puppet::Type.
     path = "#{default_confdir}/#{getPath("olcOverlay={#{@property_hash[:index]}}#{resource[:overlay]},#{getDn(resource[:suffix])}")}"
     File.delete(path)
 
-    slapcat('(objectClass=olcOverlayConfig)', getDn(resource[:suffix])).
-      split("\n").
-      grep(%r{^dn: }).
-      select { |dn| dn.match(%r{^dn: olcOverlay=\{(\d+)\}(.+),#{Regexp.quote(getDn(resource[:suffix]))}$}).captures[0].to_i > @property_hash[:index] }.
-      each do |dn|
+    slapcat('(objectClass=olcOverlayConfig)', getDn(resource[:suffix]))
+      .split("\n")
+      .grep(%r{^dn: })
+      .select { |dn| dn.match(%r{^dn: olcOverlay=\{(\d+)\}(.+),#{Regexp.quote(getDn(resource[:suffix]))}$}).captures[0].to_i > @property_hash[:index] }
+      .each do |dn|
       index, type = dn.match(%r{^dn: olcOverlay=\{(\d+)\}(.+),#{Regexp.quote(getDn(resource[:suffix]))}$}).captures
       index = index.to_i
       old_filename = "#{default_confdir}/#{getPath(dn.split(' ', 2)[1])}"

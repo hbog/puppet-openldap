@@ -14,23 +14,23 @@ describe 'openldap::server' do
           it { is_expected.to compile.with_all_deps }
 
           it {
-            is_expected.to contain_class('openldap::server::install').
-              that_comes_before('Class[openldap::server::config]')
+            is_expected.to contain_class('openldap::server::install')
+              .that_comes_before('Class[openldap::server::config]')
           }
 
           it {
-            is_expected.to contain_class('openldap::server::config').
-              that_notifies('Class[openldap::server::service]')
+            is_expected.to contain_class('openldap::server::config')
+              .that_notifies('Class[openldap::server::service]')
           }
 
           it {
-            is_expected.to contain_class('openldap::server::service').
-              that_comes_before('Class[openldap::server::slapdconf]')
+            is_expected.to contain_class('openldap::server::service')
+              .that_comes_before('Class[openldap::server::slapdconf]')
           }
 
           it {
-            is_expected.to contain_class('openldap::server::slapdconf').
-              that_comes_before('Class[openldap::server]')
+            is_expected.to contain_class('openldap::server::slapdconf')
+              .that_comes_before('Class[openldap::server]')
           }
 
           case facts[:os]['family']

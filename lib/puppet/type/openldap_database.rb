@@ -64,7 +64,7 @@ Puppet::Type.newtype(:openldap_database) do
   newproperty(:directory) do
     desc 'The directory where the BDB files containing this database and associated indexes live.'
     defaultto do
-      '/var/lib/ldap' unless %w[monitor config relay ldap].include? (@resource[:backend]).to_s
+      '/var/lib/ldap' unless %w[monitor config relay ldap].include? @resource[:backend].to_s
     end
     validate do |value|
       raise ArgumentError, 'Invalid value' unless value.start_with?('/')
@@ -149,7 +149,7 @@ Puppet::Type.newtype(:openldap_database) do
 
     newvalues(:true, :false)
     defaultto do
-      if %w[monitor config relay ldap].include? (@resource[:backend]).to_s
+      if %w[monitor config relay ldap].include? @resource[:backend].to_s
         :false
       else
         :true

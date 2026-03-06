@@ -3,9 +3,9 @@
 require File.expand_path(File.join(File.dirname(__FILE__), %w[.. openldap]))
 require 'base64'
 
-Puppet::Type.
-  type(:openldap_database).
-  provide(:olc, parent: Puppet::Provider::Openldap) do
+Puppet::Type
+  .type(:openldap_database)
+  .provide(:olc, parent: Puppet::Provider::Openldap) do
   # TODO: Use ruby bindings (can't find one that support IPC)
 
   defaultfor 'os.family' => %i[debian freebsd redhat suse]
@@ -62,7 +62,7 @@ Puppet::Type.
         when %r{^olcUpdateref: }i
           updateref = line.split[1]
         when %r{^olcLastBind: }
-          lastbind = line.split[1] == 'TRUE' ? :true : :false
+          lastbind = (line.split[1] == 'TRUE') ? :true : :false
         when %r{^olcLastBindPrecision: }
           lastbindprecision = line.split[1]
         when %r{^olcDb\S+: }i
@@ -89,9 +89,9 @@ Puppet::Type.
             end
           end
         when %r{^olcMirrorMode: }
-          mirrormode = line.split[1] == 'TRUE' ? :true : :false
+          mirrormode = (line.split[1] == 'TRUE') ? :true : :false
         when %r{^olcMultiProvider: }
-          multiprovider = line.split[1] == 'TRUE' ? :true : :false
+          multiprovider = (line.split[1] == 'TRUE') ? :true : :false
         when %r{^olcSyncUseSubentry: }
           syncusesubentry = line.split(' ', 2)[1]
         when %r{^olcSyncrepl: }
@@ -134,7 +134,7 @@ Puppet::Type.
         syncusesubentry: syncusesubentry,
         syncrepl: syncrepl,
         limits: limits,
-        security: security
+        security: security,
       )
     end
   end
@@ -171,11 +171,11 @@ Puppet::Type.
 
     `service slapd stop`
     File.delete("#{default_confdir}/cn=config/olcDatabase={#{@property_hash[:index]}}#{backend}.ldif")
-    slapcat("(objectClass=olc#{backend.to_s.capitalize}Config)").
-      split("\n").
-      grep(%r{^dn: }).
-      select { |dn| dn.match(%r{^dn: olcDatabase={(\d+)}#{backend},cn=config$}).captures[0].to_i > @property_hash[:index] }.
-      each do |dn|
+    slapcat("(objectClass=olc#{backend.to_s.capitalize}Config)")
+      .split("\n")
+      .grep(%r{^dn: })
+      .select { |dn| dn.match(%r{^dn: olcDatabase={(\d+)}#{backend},cn=config$}).captures[0].to_i > @property_hash[:index] }
+      .each do |dn|
       index = dn[%r{\d+}].to_i
       old_filename = "#{default_confdir}/cn=config/olcDatabase={#{index}}#{backend}.ldif"
       new_filename = "#{default_confdir}/cn=config/olcDatabase={#{index - 1}}#{backend}.ldif"
@@ -246,12 +246,12 @@ Puppet::Type.
     end
     t << "olcRootDN: #{resource[:rootdn]}\n" if resource[:rootdn]
     t << "olcRootPW: #{resource[:rootpw]}\n" if resource[:rootpw]
-    t << "olcReadOnly: #{resource[:readonly] == :true ? 'TRUE' : 'FALSE'}\n" if resource[:readonly]
+    t << "olcReadOnly: #{(resource[:readonly] == :true) ? 'TRUE' : 'FALSE'}\n" if resource[:readonly]
     t << "olcSizeLimit: #{resource[:sizelimit]}\n" if resource[:sizelimit]
     t << "olcDbMaxSize: #{resource[:dbmaxsize]}\n" if resource[:dbmaxsize]
     t << "olcTimeLimit: #{resource[:timelimit]}\n" if resource[:timelimit]
     t << "olcUpdateref: #{resource[:updateref]}\n" if resource[:updateref]
-    t << "olcLastBind: #{resource[:lastbind] == :true ? 'TRUE' : 'FALSE'}\n" if resource[:lastbind]
+    t << "olcLastBind: #{(resource[:lastbind] == :true) ? 'TRUE' : 'FALSE'}\n" if resource[:lastbind]
     t << "olcLastBindPrecision: #{resource[:lastbindprecision]}\n" if resource[:lastbindprecision]
     resource[:dboptions]&.each do |k, v|
       t << case k
@@ -269,9 +269,9 @@ Puppet::Type.
              end
            end
     end
-    t << (resource[:syncrepl].map { |x| "olcSyncrepl: #{x}\n" }.join) if resource[:syncrepl]
-    t << "olcMirrorMode: #{resource[:mirrormode] == :true ? 'TRUE' : 'FALSE'}\n" if resource[:mirrormode]
-    t << "olcMultiProvider: #{resource[:multiprovider] == :true ? 'TRUE' : 'FALSE'}\n" if resource[:multiprovider]
+    t << resource[:syncrepl].map { |x| "olcSyncrepl: #{x}\n" }.join if resource[:syncrepl]
+    t << "olcMirrorMode: #{(resource[:mirrormode] == :true) ? 'TRUE' : 'FALSE'}\n" if resource[:mirrormode]
+    t << "olcMultiProvider: #{(resource[:multiprovider] == :true) ? 'TRUE' : 'FALSE'}\n" if resource[:multiprovider]
     t << "olcSyncUseSubentry: #{resource[:syncusesubentry]}\n" if resource[:syncusesubentry]
     t << "#{resource[:limits].map { |x| "olcLimits: #{x}" }.join("\n")}\n" if resource[:limits] && !resource[:limits].empty?
     t << "#{resource[:security].map { |k, v| "olcSecurity: #{k}=#{v}" }.join("\n")}\n" if resource[:security] && !resource[:security].empty?
@@ -297,14 +297,14 @@ Puppet::Type.
     t.delete
     initdb if resource[:initdb] == :true
     @property_hash[:ensure] = :present
-    slapcat("(&(objectClass=olc#{resource[:backend].to_s.capitalize}Config)(olcSuffix=#{resource[:suffix]}))").
-      split("\n").map do |line|
+    slapcat("(&(objectClass=olc#{resource[:backend].to_s.capitalize}Config)(olcSuffix=#{resource[:suffix]}))")
+      .split("\n").map do |line|
       @property_hash[:index] = line.match(%r{^olcDatabase: \{(\d+)\}#{resource[:backend]}$}).captures[0] if line =~ %r{^olcDatabase: }
     end
   end
 
   def initialize(value = {})
-    super(value)
+    super
     @property_flush = {}
   end
 
@@ -394,7 +394,7 @@ Puppet::Type.
       t << "replace: olcRootPW\nolcRootPW: #{resource[:rootpw]}\n-\n" if @property_flush[:rootpw]
       t << "replace: olcSuffix\nolcSuffix: #{resource[:suffix]}\n-\n" if @property_flush[:suffix]
       t << "replace: olcRelay\nolcRelay: #{resource[:relay]}\n-\n" if @property_flush[:relay]
-      t << "replace: olcReadOnly\nolcReadOnly: #{resource[:readonly] == :true ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:readonly]
+      t << "replace: olcReadOnly\nolcReadOnly: #{(resource[:readonly] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:readonly]
       t << "replace: olcSizeLimit\nolcSizeLimit: #{resource[:sizelimit]}\n-\n" if @property_flush[:sizelimit]
       t << "replace: olcTimeLimit\nolcTimeLimit: #{resource[:timelimit]}\n-\n" if @property_flush[:timelimit]
       t << "replace: olcDbMaxSize\nolcDbMaxSize: #{resource[:dbmaxsize]}\n-\n" if @property_flush[:dbmaxsize]
@@ -434,10 +434,10 @@ Puppet::Type.
       end
       t << "replace: olcSyncrepl\n#{resource[:syncrepl].map { |x| "olcSyncrepl: #{x}" }.join("\n")}\n-\n" if @property_flush[:syncrepl]
       t << "replace: olcUpdateref\nolcUpdateref: #{resource[:updateref]}\n-\n" if @property_flush[:updateref]
-      t << "replace: olcLastBind\nolcLastBind: #{resource[:lastbind] == :true ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:lastbind]
+      t << "replace: olcLastBind\nolcLastBind: #{(resource[:lastbind] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:lastbind]
       t << "replace: olcLastBindPrecision\nolcLastBindPrecision: #{resource[:lastbindprecision]}\n" if @property_flush[:lastbindprecision]
-      t << "replace: olcMirrorMode\nolcMirrorMode: #{resource[:mirrormode] == :true ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:mirrormode]
-      t << "replace: olcMultiProvider\nolcMultiProvider: #{resource[:multiprovider] == :true ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:multiprovider]
+      t << "replace: olcMirrorMode\nolcMirrorMode: #{(resource[:mirrormode] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:mirrormode]
+      t << "replace: olcMultiProvider\nolcMultiProvider: #{(resource[:multiprovider] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:multiprovider]
       t << "replace: olcSyncUseSubentry\nolcSyncUseSubentry: #{resource[:syncusesubentry]}\n-\n" if @property_flush[:syncusesubentry]
       t << "replace: olcLimits\n#{@property_flush[:limits].map { |x| "olcLimits: #{x}" }.join("\n")}\n-\n" if @property_flush[:limits]
       t << "replace: olcSecurity\n#{@property_flush[:security].map { |k, v| "olcSecurity: #{k}=#{v}" }.join("\n")}\n-\n" if @property_flush[:security]

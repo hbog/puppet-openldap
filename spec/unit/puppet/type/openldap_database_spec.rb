@@ -96,11 +96,11 @@ describe Puppet::Type.type(:openldap_database) do
     end
 
     it 'does not include the password in the change log when adding the password' do
-      expect(@password.change_to_s(:absent, 'secret')).not_to be_include('secret')
+      expect(@password.change_to_s(:absent, 'secret')).not_to include('secret')
     end
 
     it 'does not include the password in the change log when changing the password' do
-      expect(@password.change_to_s('oldpass', 'secret')).not_to be_include('secret')
+      expect(@password.change_to_s('oldpass', 'secret')).not_to include('secret')
     end
 
     it 'redacts the password when displaying the old value' do

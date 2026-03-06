@@ -13,7 +13,7 @@ class Puppet::Provider::Openldap < Puppet::Provider
     arguments = [
       '-b', base,
       '-o', 'ldif-wrap=no',
-      '-H', "ldap:///#{dn}???#{filter}"
+      '-H', "ldap:///#{dn}???#{filter}",
     ]
 
     original_slapcat(*arguments)
@@ -34,11 +34,11 @@ class Puppet::Provider::Openldap < Puppet::Provider
   # Unwrap LDIF and return each attribute beginning with "olc" also removing
   # that occurance of "olc" at the beginning.
   def self.get_lines(items)
-    items.strip.
-      gsub("\n ", '').
-      split("\n").
-      grep(%r{^olc}).
-      map { |entry| entry.gsub(%r{^olc}, '') }
+    items.strip
+         .gsub("\n ", '')
+         .split("\n")
+         .grep(%r{^olc})
+         .map { |entry| entry.gsub(%r{^olc}, '') }
   end
 
   def get_lines(*args)
@@ -60,13 +60,13 @@ class Puppet::Provider::Openldap < Puppet::Provider
   #    ['dn: cn=schema,cn=config', '...']]
   #
   def self.get_entries(items)
-    items.strip.
-      split("\n\n").
-      map do |paragraph|
-        paragraph.
-          gsub("\n ", '').
-          split("\n")
-      end
+    items.strip
+         .split("\n\n")
+         .map do |paragraph|
+           paragraph
+             .gsub("\n ", '')
+             .split("\n")
+         end
   end
 
   def get_entries(*args)
