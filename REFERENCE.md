@@ -42,7 +42,7 @@
 
 ### Functions
 
-* [`openldap_password`](#openldap_password)
+* [`openldap_password`](#openldap_password): Returns the openldap password hash from the clear text password.
 
 ### Data types
 
@@ -1785,7 +1785,7 @@ usually discover the appropriate provider for your platform.
 
 Type: Ruby 4.x API
 
-The openldap_password function.
+Returns the openldap password hash from the clear text password.
 
 #### `openldap_password(String $secret, Optional[Enum["PBKDF2","CRYPT","MD5","SMD5","SSHA","SHA"]] $scheme, Optional[Integer] $iterations, Optional[Enum["SHA256", "SHA512"]] $hash_type)`
 
