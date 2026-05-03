@@ -181,7 +181,7 @@ Puppet::Type.newtype(:openldap_database) do
     desc 'Specifies the maximum number of seconds (in real time) slapd will spend answering a search request.'
   end
 
-  newproperty(:updateref) do
+  newproperty(:updateref, array_matching: :all) do
     desc 'This directive is only applicable in a slave slapd. It specifies the URL to return to clients which submit update requests upon the replica.'
   end
 

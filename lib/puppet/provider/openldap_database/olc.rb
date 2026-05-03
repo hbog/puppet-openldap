@@ -60,7 +60,8 @@ Puppet::Type
         when %r{^olcTimeLimit: }i
           timelimit = line.split[1]
         when %r{^olcUpdateref: }i
-          updateref = line.split[1]
+          updateref ||=[]
+          updateref.push(line.split[1])
         when %r{^olcLastBind: }
           lastbind = (line.split[1] == 'TRUE') ? :true : :false
         when %r{^olcLastBindPrecision: }
@@ -250,7 +251,7 @@ Puppet::Type
     t << "olcSizeLimit: #{resource[:sizelimit]}\n" if resource[:sizelimit]
     t << "olcDbMaxSize: #{resource[:dbmaxsize]}\n" if resource[:dbmaxsize]
     t << "olcTimeLimit: #{resource[:timelimit]}\n" if resource[:timelimit]
-    t << "olcUpdateref: #{resource[:updateref]}\n" if resource[:updateref]
+    t << resource[:updateref].map { |x| "olcUpdateref: #{x}\n"}.join if resource[:updateref]
     t << "olcLastBind: #{(resource[:lastbind] == :true) ? 'TRUE' : 'FALSE'}\n" if resource[:lastbind]
     t << "olcLastBindPrecision: #{resource[:lastbindprecision]}\n" if resource[:lastbindprecision]
     resource[:dboptions]&.each do |k, v|
@@ -433,7 +434,7 @@ Puppet::Type
         # rubocop:enable Metrics/BlockNesting
       end
       t << "replace: olcSyncrepl\n#{resource[:syncrepl].map { |x| "olcSyncrepl: #{x}" }.join("\n")}\n-\n" if @property_flush[:syncrepl]
-      t << "replace: olcUpdateref\nolcUpdateref: #{resource[:updateref]}\n-\n" if @property_flush[:updateref]
+      t << "replace: olcUpdateref\n#{resource[:updateref].map { |x| "olcUpdateref: #{x}" }.join("\n")}\n-\n" if @property_flush[:updateref]
       t << "replace: olcLastBind\nolcLastBind: #{(resource[:lastbind] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:lastbind]
       t << "replace: olcLastBindPrecision\nolcLastBindPrecision: #{resource[:lastbindprecision]}\n" if @property_flush[:lastbindprecision]
       t << "replace: olcMirrorMode\nolcMirrorMode: #{(resource[:mirrormode] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:mirrormode]

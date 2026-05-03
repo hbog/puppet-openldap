@@ -12,7 +12,7 @@ define openldap::server::database (
   Optional[String[1]]                                 $sizelimit         = undef,
   Optional[String[1]]                                 $dbmaxsize         = undef,
   Optional[String[1]]                                 $timelimit         = undef,
-  Optional[String[1]]                                 $updateref         = undef,
+  Optional[Variant[String[1],Array[String[1]]]]       $updateref         = undef,
   Optional[Boolean]                                   $lastbind          = undef,
   Optional[Integer[0]]                                $lastbindprecision = undef,
   Openldap::Limits                                    $limits            = {},
@@ -69,6 +69,11 @@ define openldap::server::database (
     }
   }
 
+  $update_ref = $updateref ? {
+    String => [$updateref],
+    default => $updateref   # Array or undef
+  }
+
   openldap_database { $title:
     ensure            => $ensure,
     suffix            => $suffix,
@@ -83,7 +88,7 @@ define openldap::server::database (
     sizelimit         => $sizelimit,
     timelimit         => $timelimit,
     dbmaxsize         => $dbmaxsize,
-    updateref         => $updateref,
+    updateref         => $update_ref,
     lastbind          => $lastbind,
     lastbindprecision => $lastbindprecision,
     dboptions         => $dboptions,
