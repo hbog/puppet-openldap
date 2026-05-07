@@ -27,7 +27,7 @@ Puppet::Type
       sizelimit = nil
       dbmaxsize = nil
       timelimit = nil
-      updateref = nil
+      updateref = []
       lastbind = nil
       lastbindprecision = nil
       dboptions = {}
@@ -60,7 +60,6 @@ Puppet::Type
         when %r{^olcTimeLimit: }i
           timelimit = line.split[1]
         when %r{^olcUpdateref: }i
-          updateref ||=[]
           updateref.push(line.split[1])
         when %r{^olcLastBind: }
           lastbind = (line.split[1] == 'TRUE') ? :true : :false
@@ -251,7 +250,9 @@ Puppet::Type
     t << "olcSizeLimit: #{resource[:sizelimit]}\n" if resource[:sizelimit]
     t << "olcDbMaxSize: #{resource[:dbmaxsize]}\n" if resource[:dbmaxsize]
     t << "olcTimeLimit: #{resource[:timelimit]}\n" if resource[:timelimit]
-    t << resource[:updateref].map { |x| "olcUpdateref: #{x}\n"}.join if resource[:updateref]
+    resource[:updateref].each do |ref|
+      t << "olcUpdateref: #{ref}\n"
+    end
     t << "olcLastBind: #{(resource[:lastbind] == :true) ? 'TRUE' : 'FALSE'}\n" if resource[:lastbind]
     t << "olcLastBindPrecision: #{resource[:lastbindprecision]}\n" if resource[:lastbindprecision]
     resource[:dboptions]&.each do |k, v|
@@ -434,7 +435,7 @@ Puppet::Type
         # rubocop:enable Metrics/BlockNesting
       end
       t << "replace: olcSyncrepl\n#{resource[:syncrepl].map { |x| "olcSyncrepl: #{x}" }.join("\n")}\n-\n" if @property_flush[:syncrepl]
-      t << "replace: olcUpdateref\n#{resource[:updateref].map { |x| "olcUpdateref: #{x}" }.join("\n")}\n-\n" if @property_flush[:updateref]
+      t << "replace: olcUpdateref\n#{@property_flush[:updateref].map { |x| "olcUpdateref: #{x}" }.join("\n")}\n-\n" if @property_flush[:updateref] && !@property_flush[:updateref].empty?
       t << "replace: olcLastBind\nolcLastBind: #{(resource[:lastbind] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:lastbind]
       t << "replace: olcLastBindPrecision\nolcLastBindPrecision: #{resource[:lastbindprecision]}\n" if @property_flush[:lastbindprecision]
       t << "replace: olcMirrorMode\nolcMirrorMode: #{(resource[:mirrormode] == :true) ? 'TRUE' : 'FALSE'}\n-\n" if @property_flush[:mirrormode]
